@@ -1,30 +1,39 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import CartwidgetComponent from '../CartWidgetComponent/CartWidgetComponent';
+import CartwidgetComponent from '../CartWidgetComponent/CartWidgetComponent'
+import { Link } from 'react-router-dom';
+
 const NavBarcomponent = () => {
+    const [categories, setCategories] = useState([])
+    useEffect(()=>{
+        axios
+        .get('https://dummyjson.com/products/categories')
+        .then((res) => {
+          setCategories(res.data);
+        })
+        .catch((error) => console.log(error));
+       },[]);
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container>
-                <Navbar.Brand href="#home">
-                    <strong>Guitarras Juan Pablo</strong>
+                <Navbar.Brand><Link to={"/"}>Tiendita de JP</Link>
+                    
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link href="#home">Home</Nav.Link>
-                        <Nav.Link href="#link">Link</Nav.Link>
                         <NavDropdown title="Categorías" id="basic-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Guitarras hollow</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">
-                                Guitarras semi hollow
-                            </NavDropdown.Item>
-                            {/* <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item> */}
+                            {categories.map((category, index) =>{
+                                return (
+                                    <NavDropdown.Item key={index} >
+                                    <Link to={`/category/${category}`}>{category}</Link>
+                                    </NavDropdown.Item>
+                                )
+                            })}; 
                         </NavDropdown>
                     </Nav>
                     <CartwidgetComponent />
@@ -32,6 +41,6 @@ const NavBarcomponent = () => {
             </Container>
         </Navbar>
     );
-}
+};
 
 export default NavBarcomponent;
