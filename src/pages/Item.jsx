@@ -17,8 +17,7 @@ const Item = () => {
     }, [id])
 
     return <ItemDatailContainer product={product} />
-}
-
+};
 export default Item;
 
 

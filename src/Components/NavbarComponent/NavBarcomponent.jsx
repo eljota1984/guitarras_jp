@@ -6,34 +6,37 @@ import axios from 'axios';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import CartwidgetComponent from '../CartWidgetComponent/CartWidgetComponent'
 import { Link } from 'react-router-dom';
+import '../NavbarComponent/NavbarComponent.css'
 
 const NavBarcomponent = () => {
     const [categories, setCategories] = useState([])
-    useEffect(()=>{
+    useEffect(() => {
         axios
-        .get('https://dummyjson.com/products/categories')
-        .then((res) => {
-          setCategories(res.data);
-        })
-        .catch((error) => console.log(error));
-       },[]);
+            .get('https://dummyjson.com/products/categories')
+            .then((res) => {
+                setCategories(res.data);
+            })
+            .catch((error) => console.log(error));
+    }, []);
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container>
-                <Navbar.Brand><Link to={"/"}>Tiendita de JP</Link>
-                    
+                <Navbar.Brand><Link to={"/"} className='nombre-tiendita'>Tiendita de JP</Link>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <NavDropdown title="Categorías" id="basic-nav-dropdown">
-                            {categories.map((category, index) =>{
+                            {categories.map((category, index) => {
+                                const formattedCategory = category.replace('-', ' ');
                                 return (
                                     <NavDropdown.Item key={index} >
-                                    <Link to={`/category/${category}`}>{category}</Link>
+                                        <Link to={`/category/${category}`} className='category-text'>
+                                            {formattedCategory.charAt(0).toUpperCase() + formattedCategory.slice(1)}
+                                        </Link>
                                     </NavDropdown.Item>
                                 )
-                            })}; 
+                            })};
                         </NavDropdown>
                     </Nav>
                     <CartwidgetComponent />
@@ -42,5 +45,4 @@ const NavBarcomponent = () => {
         </Navbar>
     );
 };
-
 export default NavBarcomponent;
