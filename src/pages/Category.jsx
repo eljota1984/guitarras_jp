@@ -1,48 +1,28 @@
-// import React from 'react'
-// import { useEffect, useState } from 'react';
-// import axios from 'axios';
-// import ItemListContainer from '../Components/ItemListContainer/ItemListContainer'
-// import { useParams } from 'react-router-dom';
+
+// import React from "react";
+// import { useAllProductsByFilter } from '../hooks/useProducts'
+// import { ItemListContainer } from "../Components/ItemListContainer/ItemListContainer";
+// import { useParams } from "react-router-dom";
 
 // const Category = () => {
-//   const [products, setProducts] = useState([]);
-
 //   const { categoryId } = useParams();
-
-//   useEffect(() => {
-//     axios
-//       .get(`https://dummyjson.com/products/category/${categoryId}`)
-//       .then((res) => {
-//         setProducts(res.data.products);
-//       })
-//       .catch((error) => console.log(error));
-//   }, [categoryId])
+//   const { products } = useAllProductsByFilter("products", categoryId, "category");
 
 //   return <ItemListContainer products={products} />;
 // };
+
 // export default Category;
 
 import React from "react";
-// import { useAllProducts } from "../hooks/useProducts";
-// import { ItemListContainer } from "../Components/ItemListContainer/ItemListContainer";
-import { useAllProducts } from '../hooks/useProducts'
-import { ItemListContainer} from "../Components/ItemListContainer/ItemListContainer";
+import { useAllProductsByFilter } from "../hooks/useProducts";
+import { ItemListContainer } from "../components";
 import { useParams } from "react-router-dom";
 
 const Category = () => {
-  const [productsFiltered, setProductsFiltered] = React.useState([]);
   const { categoryId } = useParams();
-  const { products } = useAllProducts();
+  const { products } = useAllProductsByFilter("products", categoryId, "category");
 
-  React.useEffect(() => {
-    const productsFiltered = products.filter(
-      (product) => product.categoryId === categoryId
-    );
-    setProductsFiltered(productsFiltered);
-  }, [categoryId]);
-
-  return <ItemListContainer products={productsFiltered} />;
+  return <ItemListContainer products={products} />;
 };
 
 export default Category;
-
